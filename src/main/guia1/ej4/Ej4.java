@@ -1,4 +1,4 @@
-package guia1.ej4;
+package main.guia1.ej4;
 
 /**
  * Created by matiasvenditti on 3/14/17.

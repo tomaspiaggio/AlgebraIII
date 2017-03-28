@@ -1,13 +1,13 @@
-package guia1;
+package main.guia1;
 
-import guia1.ej1.Ej1;
-import guia1.ej2.Ej2;
-import guia1.ej3.Ej3;
-import guia1.ej4.Ej4;
-import guia1.ej5.Ej5;
-import guia1.ej6.Ej6;
-import guia1.ej7.Ej7;
-import guia1.ej8.Ej8;
+import main.guia1.ej1.Ej1;
+import main.guia1.ej2.Ej2;
+import main.guia1.ej3.Ej3;
+import main.guia1.ej4.Ej4;
+import main.guia1.ej5.Ej5;
+import main.guia1.ej6.Ej6;
+import main.guia1.ej7.Ej7;
+import main.guia1.ej8.Ej8;
 
 /**
  * Created by matiasvenditti on 3/23/17.

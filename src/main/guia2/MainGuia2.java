@@ -1,4 +1,4 @@
-package guia2.ej12;
+package main.guia2;
 
 
 /**

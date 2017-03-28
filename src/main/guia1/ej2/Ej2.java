@@ -1,8 +1,8 @@
-package guia1.ej2;
+package main.guia1.ej2;
 
 
-import static guia1.ej1.Ej1.c1iterative;
-import static guia1.ej1.Ej1.c1recursive;
+import static main.guia1.ej1.Ej1.c1iterative;
+import static main.guia1.ej1.Ej1.c1recursive;
 
 /**
  * Created by matiasvenditti on 3/9/17.

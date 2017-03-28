@@ -1,4 +1,4 @@
-package guia1.ej8;
+package main.guia1.ej8;
 
 /**
  * Created by matiasvenditti on 3/23/17.

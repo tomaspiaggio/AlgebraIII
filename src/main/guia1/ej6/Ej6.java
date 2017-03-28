@@ -1,4 +1,4 @@
-package guia1.ej6;
+package main.guia1.ej6;
 
 import java.util.ArrayList;
 import java.util.List;
