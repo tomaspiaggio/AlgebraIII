@@ -11,9 +11,12 @@ public class ExerciseThree implements Exercise3 {
     @Override
     public double[] exerciseAI(double[][] matrixA, double[] vectorX, Calculator calculator) {
         double[] result = new double[vectorX.length];
-        for (int i = 0; i < matrixA.length; i++)
+        for (int i = 0; i < matrixA.length; i++) {
+            double sum = 0;
             for (int j = 0; j < matrixA[i].length; j++)
-                result[j] = calculator.sum(result[j], calculator.multiplication(matrixA[i][j], vectorX[j]));
+                sum = calculator.sum(sum, calculator.multiplication(matrixA[j][i], vectorX[j]));
+            result[i] = sum;
+        }
         return result;
     }
 
@@ -29,11 +32,11 @@ public class ExerciseThree implements Exercise3 {
     public double[][] exerciseAIII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
         double[][] result = new double[matrixA.length][matrixA.length];
         for (int i = 0; i < matrixA.length; i++)
-            for (int j = 0; j < matrixA[i].length; j++) {
+            for (int j = 0; j < matrixA[i].length; j++){
                 double sum = 0;
                 for (int k = 0; k < matrixA.length; k++)
-                    sum = calculator.sum(sum, calculator.multiplication(matrixA[i][k], matrixB[k][j]));
-                result[i][j] = sum;
+                    sum = calculator.sum(sum, calculator.multiplication(matrixA[k][i], matrixB[j][k]));
+                result[j][i] = sum;
             }
         return result;
     }
@@ -86,5 +89,49 @@ public class ExerciseThree implements Exercise3 {
     @Override
     public double[][] exerciseE(double[][] matrixA, double[][] matrixB, Calculator calculator) {
         return new double[0][];
+    }
+
+    public static void main(String[] args) {
+        ExerciseThree a = new ExerciseThree();
+        double[][] matA = {{3, 4, 3},
+                           {2, 3, 1},
+                           {1, 2, 2}};
+        double[] matB = {6, 9, 6};
+        print(a.exerciseAI(matA, matB, new Calculator() {
+            @Override
+            public double sum(double a, double b) {
+                return a + b;
+            }
+
+            @Override
+            public double subtraction(double a, double b) {
+                return 0;
+            }
+
+            @Override
+            public double multiplication(double a, double b) {
+                return a * b;
+            }
+
+            @Override
+            public double division(double a, double b) {
+                return 0;
+            }
+        }));
+    }
+
+    public static void print(double[] a){
+//        String result = "";
+//        for (int i = 0; i < a.length; i++) {
+//            for (int j = 0; j < a[i].length; j++) {
+//                result += "[" + a[j][i] + "]";
+//            }
+//            result += "\n";
+//        }
+//        System.out.println(result);
+
+        for (int i = 0; i < a.length; i++) {
+            System.out.println("[" + a[i] + "]");
+        }
     }
 }
