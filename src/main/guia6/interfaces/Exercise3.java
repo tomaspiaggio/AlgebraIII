@@ -1,3 +1,5 @@
+package main.guia6.interfaces;
+
 public interface Exercise3{
 	
 	public double[] exerciseAI(double[][] matrixA, double[] vectorX, Calculator calculator);
