@@ -104,9 +104,11 @@ public class ExerciseThree implements Exercise3 {
         return new double[0][];
     }
 
-    // Matik argentino.
     @Override
     public double[][] exerciseE(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-        return new double[0][];
+        double[][] result = new double[matrixA.length][matrixA.length];
+        for (int i = 0; i < matrixA.length; i++)
+            result[i][i] = calculator.sum(matrixA[i][i], matrixB[i][i]);
+        return result;
     }
 }
