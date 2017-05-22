@@ -8,7 +8,7 @@ import main.guia6.interfaces.Calculator;
 public class Main {
 
     public static void main(String[] args) {
-        double[][] matrix = {{-1,12,2,15}, {7,-3,9,6}, {0,8,3,1}, {17,6,-4,0}};
+        double[][] matrix = {{3,4,3}, {2,3,1}, {1,2,2}};
         Calculator calculator = new Calculator() {
             @Override
             public double sum(double a, double b) {
@@ -32,8 +32,10 @@ public class Main {
         };
 
         ExerciseOne exerciseOne = new ExerciseOne();
-        System.out.println(exerciseOne.exerciseA(matrix,calculator));
-        System.out.println(exerciseOne.exerciseB(matrix, calculator));
+        double[] vector = {6,9,6};
+
+
+        exerciseOne.print(exerciseOne.exerciseD(matrix, vector, calculator));
 
     }
 }
