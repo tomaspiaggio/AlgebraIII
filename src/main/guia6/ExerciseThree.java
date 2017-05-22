@@ -76,17 +76,17 @@ public class ExerciseThree implements Exercise3 {
 
     @Override
     public double[] exerciseCI(double[][] matrixA, double[] vectorX, Calculator calculator) {
-        return new double[0];
+        return exerciseDI(matrixA, 1, 1, vectorX, calculator);
     }
 
     @Override
     public double[][] exerciseCII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-        return new double[0][];
+        return exerciseDII(matrixA, 1, 1, matrixB, 1, 1, calculator);
     }
 
     @Override
     public double[][] exerciseCIII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-        return new double[0][];
+        return exerciseDIII(matrixA, 1, 1, matrixB, 1, 1, calculator);
     }
 
     @Override
