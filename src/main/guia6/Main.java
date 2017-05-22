@@ -2,6 +2,8 @@ package main.guia6;
 
 import main.guia6.interfaces.Calculator;
 
+import java.util.Arrays;
+
 /**
  * Created by matiasvenditti on 5/15/17.
  */
@@ -32,10 +34,12 @@ public class Main {
         };
 
         ExerciseOne exerciseOne = new ExerciseOne();
-        double[] vector = {6,9,6};
 
+        double[][] matrixA = {{1,2,3}, {4,5,6}, {7,8,9}};
 
-        exerciseOne.print(exerciseOne.exerciseD(matrix, vector, calculator));
+        double[][] result = exerciseOne.exerciseG(matrixA, calculator);
+        System.out.println(Arrays.deepToString(result));
+
 
     }
 }

@@ -52,18 +52,46 @@ public class ExerciseOne implements Exercise1 {
 
     @Override
     public double[][] exerciseE(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-        return new double[0][];
+        if (matrixA.length == matrixB.length && matrixA[0].length == matrixB[0].length){
+            double[][] result = new double[matrixA.length][matrixA[0].length];
+            for (int i = 0; i < matrixA.length; i++) {
+                for (int j = 0; j < matrixA[i].length; j++) {
+                    result[i][j] = calculator.sum(matrixA[i][j], matrixB[i][j]);
+                }
+            }
+            return result;
+        }
+        else{
+            throw new RuntimeException("Cannot complete operation with the given values");
+        }
     }
 
+    /*
+        Terminar.
+     */
     @Override
     public double[][] exerciseF(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-        return new double[0][];
+        if (matrixA[0].length == matrixB.length){
+            //multiplicacion de matrices.
+            double[][] result = new double[matrixB.length][];
+            return result;
+        }
+        else{
+            throw new RuntimeException("Cannot multiply.");
+        }
     }
 
     @Override
     public double[][] exerciseG(double[][] matrix, Calculator calculator) {
-        return new double[0][];
+        double[][] result = new double[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[i].length; j++) {
+                result[i][j] = matrix[j][i];
+            }
+        }
+        return result;
     }
+
 
     public void print(double[] a){
         for (int i = 0; i < a.length; i++) {
