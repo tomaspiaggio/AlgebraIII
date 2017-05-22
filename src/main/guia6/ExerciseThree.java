@@ -109,49 +109,4 @@ public class ExerciseThree implements Exercise3 {
     public double[][] exerciseE(double[][] matrixA, double[][] matrixB, Calculator calculator) {
         return new double[0][];
     }
-
-    public static void main(String[] args) {
-        ExerciseThree a = new ExerciseThree();
-        double[][] matA = {{3, 1, 0},
-                           {2, 3, 2},
-                           {1, 2, 2}};
-        double[] matB = {6, 4, 1};
-
-        print(a.exerciseBI(matA, matB, new Calculator() {
-            @Override
-            public double sum(double a, double b) {
-                return a + b;
-            }
-
-            @Override
-            public double subtraction(double a, double b) {
-                return 0;
-            }
-
-            @Override
-            public double multiplication(double a, double b) {
-                return a * b;
-            }
-
-            @Override
-            public double division(double a, double b) {
-                return 0;
-            }
-        }));
-    }
-
-    public static void print(double[] a){
-//        String result = "";
-//        for (int i = 0; i < a.length; i++) {
-//            for (int j = 0; j < a[i].length; j++) {
-//                result += "[" + a[j][i] + "]";
-//            }
-//            result += "\n";
-//        }
-//        System.out.println(result);
-
-        for (int i = 0; i < a.length; i++) {
-            System.out.println("[" + a[i] + "]");
-        }
-    }
 }
