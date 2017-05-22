@@ -9,11 +9,11 @@ import main.guia6.interfaces.Exercise1;
 public class ExerciseOne implements Exercise1 {
     @Override
     public double exerciseA(double[][] matrix, Calculator calculator) {
-        double result = matrix[0][0];
-        for (int i = 1; i < matrix.length; i++){
-            result = calculator.sum(result, matrix[i][i]);
+        double sum = 0;
+        for (int i = 0; i < matrix.length; i++){
+            sum = calculator.sum(sum, matrix[i][i]);
         }
-        return result;
+        return sum;
     }
 
     /*
@@ -42,12 +42,15 @@ public class ExerciseOne implements Exercise1 {
     @Override
     public double[] exerciseD(double[][] matrix, double[] vector, Calculator calculator) {
         double[] result = new double[vector.length];
-        for(int j = 0; j < matrix.length; j++){
-            for (int i = 0; i < matrix[j].length; i++) {
-                result[i] = calculator.sum(result[i], calculator.multiplication(matrix[j][i], vector[i]));
-            }
+        for (int i = 0; i < matrix.length; i++) {
+            double sum = 0;
+            for (int j = 0; j < matrix[i].length; j++)
+                sum = calculator.sum(sum, calculator.multiplication(matrix[j][i], vector[j]));
+            result[i] = sum;
         }
         return result;
+
+
     }
 
     @Override
@@ -66,14 +69,18 @@ public class ExerciseOne implements Exercise1 {
         }
     }
 
-    /*
-        Terminar.
-     */
+
     @Override
     public double[][] exerciseF(double[][] matrixA, double[][] matrixB, Calculator calculator) {
         if (matrixA[0].length == matrixB.length){
-            //multiplicacion de matrices.
-            double[][] result = new double[matrixB.length][];
+            double[][] result = new double[matrixA.length][matrixA.length];
+            for (int i = 0; i < matrixA.length; i++)
+                for (int j = 0; j < matrixA[i].length; j++){
+                    double sum = 0;
+                    for (int k = 0; k < matrixA.length; k++)
+                        sum = calculator.sum(sum, calculator.multiplication(matrixA[k][i], matrixB[j][k]));
+                    result[j][i] = sum;
+                }
             return result;
         }
         else{
