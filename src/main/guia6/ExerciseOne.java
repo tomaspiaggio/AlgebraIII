@@ -21,11 +21,11 @@ public class ExerciseOne implements Exercise1 {
      */
     @Override
     public double exerciseB(double[][] matrix, Calculator calculator) {
-        double result = matrix[matrix.length-1][0];
-        for(int i = matrix.length-1; i >= 0; i--){
-            result = calculator.sum(result, matrix[i][(matrix.length )-i ]);
+        double sum = 0;
+        for (int i = matrix.length-1; i >= 0; i--){
+            sum = calculator.sum(sum, matrix[i][(matrix.length-1) - i]);
         }
-        return result;
+        return sum;
     }
 
     @Override

@@ -91,7 +91,11 @@ public class ExerciseThree implements Exercise3 {
 
     @Override
     public double[] exerciseDI(double[][] matrixA, int k1A, int k2A, double[] vectorX, Calculator calculator) {
-        return new double[0];
+        for (int i = 0; i < matrixA.length; i++) {
+            for (int j = (i == 0)? 0 : i - 1; j < ; j++) {
+
+            }
+        }
     }
 
     @Override
