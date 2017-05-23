@@ -24,7 +24,7 @@ public class ExerciseThree implements Exercise3 {
     public double[][] exerciseAII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
         for (int i = 0; i < matrixA.length; i++)
             for (int j = i; j < matrixA[i].length; j++)
-                matrixB[i][j] = calculator.sum(matrixB[i][j], matrixA[i][j]);
+                matrixB[j][i] = calculator.sum(matrixB[j][i], matrixA[j][i]);
         return matrixB;
     }
 
@@ -57,7 +57,7 @@ public class ExerciseThree implements Exercise3 {
     public double[][] exerciseBII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
         for (int i = 0; i < matrixA.length; i++)
             for (int j = (i == 0)? 0 : i - 1; j < matrixA[i].length; j++)
-                matrixB[i][j] = calculator.sum(matrixB[i][j], matrixA[i][j]);
+                matrixB[j][i] = calculator.sum(matrixB[j][i], matrixA[j][i]);
         return matrixB;
     }
 

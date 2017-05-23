@@ -1,3 +1,5 @@
+package main.guia7.interfaces;
+
 public interface TP4{
 
 	double[] exercise1(double[][] coefficients, double[] independentTerms);

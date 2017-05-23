@@ -1,3 +1,5 @@
+package main.guia7.interfaces;
+
 public interface Calculator{
 	
 	// The equivalent for sum(5,10) is 5+10=15;
