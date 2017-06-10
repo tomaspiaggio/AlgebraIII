@@ -49,7 +49,7 @@ public class Exercise implements TP4 {
             }
         }
         print(coefficients, independentTerms);
-        return exercise2(coefficients, independentTerms);
+        return resolve(coefficients, independentTerms);
     }
 
     @Override
@@ -77,12 +77,23 @@ public class Exercise implements TP4 {
         return new double[0];
     }
 
+    private double[] resolve(double[][] coefficients, double[] independentTerms){
+        double[] result = new double[coefficients.length];
+        for (int i = coefficients.length - 1; i >= 0; i--) {
+            double sum = 0;
+            for (int j = i; j < coefficients[i].length; j++)
+                sum += coefficients[j][i] * result[j];
+            result[i] = (independentTerms[i] - sum) / coefficients[i][i];
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         Exercise a = new Exercise();
         double[][] coefficients = {{1, 2, 1},{2, 3, 1},{3, 2, 2}};
         double[] victor = {6, 6, 3};
-//        print(a.exercise5WithoutPivoteo(coefficients, victor));
-        a.exercise5WithoutPivoteo(coefficients, victor);
+        print1(a.exercise5WithoutPivoteo(coefficients, victor));
+//        a.exercise5WithoutPivoteo(coefficients, victor);
     }
 
     private static void print(double[][] victor, double independentTerms[]){
@@ -91,5 +102,10 @@ public class Exercise implements TP4 {
                 System.out.print("[" + victor[j][i] + "]");
             System.out.print("[" + independentTerms[i] + "]\n");
         }
+    }
+
+    private static void print1(double[] victor){
+        for (int i = 0; i < victor.length; i++)
+            System.out.print("[" + victor[i] + "]");
     }
 }
