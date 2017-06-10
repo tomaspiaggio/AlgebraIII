@@ -55,32 +55,18 @@ public class Exercise implements TP4 {
     @Override
     public double[] exercise5PartialPivoteo(double[][] coefficients, double[] independentTerms) {
         double[] original = new double[coefficients.length];
-
-        // Filling an array with 0, 1, 2, ... , n
-        for (int i = 0; i < coefficients.length; i++)
-            original[i] = i;
-
         // Bubble sorting keeping track of changes with original
-        for (int i = 0; i < coefficients.length; i++)
-            for (int j = i; j < coefficients.length - 1; j++) {
-                if(coefficients[0][j] < coefficients[0][j + 1]) {
-                    swapRows(coefficients, j, j + 1);
-                    swap(independentTerms, j, j + 1);
-                    swap(original, j, j + 1);
+        for (int k = 0; k < coefficients.length; k++) {
+            for (int i = k; i < coefficients.length; i++)
+                for (int j = i; j < coefficients.length - 1; j++) {
+                    if (coefficients[k][j] < coefficients[k][j + 1]) {
+                        swapRows(coefficients, j, j + 1);
+                        swap(independentTerms, j, j + 1);
+                        swap(original, j, j + 1);
+                    }
                 }
-            }
-        // Gauss-Jordan performed
-        double[] result = exercise5WithoutPivoteo(coefficients, independentTerms);
-
-        // Bubble sorted back to original
-        for (int i = 0; i < original.length; i++)
-            for (int j = i; j < original.length - 1; j++) {
-                if(original[j] > original[j + 1]){
-                    swap(original, j, j + 1);
-                    swap(result, j, j + 1);
-                }
-            }
-        return result;
+        }
+        return exercise5WithoutPivoteo(coefficients, independentTerms);
     }
 
     @Override
@@ -139,8 +125,7 @@ public class Exercise implements TP4 {
         Exercise a = new Exercise();
         double[][] coefficients = {{1, 2, 1},{2, 3, 1},{3, 2, 2}};
         double[] victor = {6, 6, 3};
-        print1(a.exercise5WithoutPivoteo(coefficients, victor));
-        System.out.println("\n\n");
+//        print1(a.exercise5WithoutPivoteo(coefficients, victor));
         print1(a.exercise5PartialPivoteo(coefficients, victor));
 //        a.exercise5WithoutPivoteo(coefficients, victor);
     }
