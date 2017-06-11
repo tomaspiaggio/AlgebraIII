@@ -4,6 +4,9 @@ import main.guia7.interfaces.Calculator;
 import main.guia7.interfaces.TP4;
 import sun.java2d.xr.MutableInteger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Tomas on 5/23/17.
  */
@@ -81,7 +84,20 @@ public class Exercise implements TP4 {
 
     @Override
     public double[][] exercise8(double[][] coefficients) {
-        return new double[0][];
+        double[][] identity = new double[coefficients.length][coefficients.length];
+        double[][] result = new double[coefficients.length][coefficients.length];
+        double[][] copy = new double[coefficients.length][coefficients.length];
+
+        // Because of pointer problem. When passed coefficients one time to exercise5WithoutPivoteo, then the next time it will spit out wrong values
+        copy(coefficients, copy);
+
+        for (int i = 0; i < coefficients.length; i++)
+            identity[i][i] = 1;
+        for (int i = 0; i < coefficients.length; i++) {
+            result[i] = exercise5WithoutPivoteo(coefficients.clone(), identity[i]);
+            copy(copy, coefficients);
+        }
+        return result;
     }
 
     @Override
@@ -110,6 +126,12 @@ public class Exercise implements TP4 {
         }
     }
 
+    private void copy(double[][] from, double[][] to){
+        for (int i = 0; i < from.length; i++)
+            for (int j = 0; j < from[i].length; j++)
+                to[i][j] = from[i][j];
+    }
+
     private double[] resolve(double[][] coefficients, double[] independentTerms){
         double[] result = new double[coefficients.length];
         for (int i = coefficients.length - 1; i >= 0; i--) {
@@ -125,9 +147,7 @@ public class Exercise implements TP4 {
         Exercise a = new Exercise();
         double[][] coefficients = {{1, 2, 1},{2, 3, 1},{3, 2, 2}};
         double[] victor = {6, 6, 3};
-//        print1(a.exercise5WithoutPivoteo(coefficients, victor));
-        print1(a.exercise5PartialPivoteo(coefficients, victor));
-//        a.exercise5WithoutPivoteo(coefficients, victor);
+        print2(a.exercise8(coefficients));
     }
 
     private static void print(double[][] victor, double independentTerms[]){
