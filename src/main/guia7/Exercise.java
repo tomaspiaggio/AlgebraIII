@@ -143,6 +143,13 @@ public class Exercise implements TP4 {
         return result;
     }
 
+
+    /**
+     * PARA BORRAR ANTES DE ENTREGAR
+     *
+     *
+     */
+
     public static void main(String[] args) {
         Exercise a = new Exercise();
         double[][] coefficients = {{1, 2, 1},{2, 3, 1},{3, 2, 2}};
