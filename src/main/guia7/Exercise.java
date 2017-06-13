@@ -82,20 +82,19 @@ public class Exercise implements TP4 {
 
     @Override
     public double[] exercise6(double[][] coefficients, double[] independentTerms, Calculator calculator) {
-        for (int k = 0; k < coefficients.length - 1; k++) {
-            double value = coefficients[k][k];
-            for (int i = k + 1; i < coefficients.length; i++) {
-                int j = 0;
-                while (coefficients[i][j] == 0) j++;
-                double mult = coefficients[k][i]/value;
-                while (j < coefficients[i].length) {
-                    coefficients[j][i] -= coefficients[j][k] * mult;
-                    j++;
-                }
-                independentTerms[i] -= independentTerms[k] * mult;
-                value = coefficients[k][k];
+        for (int k = 0; k < coefficients.length-1; k++){
+            double pivot = coefficients[k][k];
+            for (int i = k; i < coefficients.length; i++)
+                coefficients[i][k] = calculator.division(coefficients[i][k], pivot);
+            independentTerms[k] = calculator.division(independentTerms[k], pivot);
+            double value = coefficients[k][k+1];
+            for (int j = k; j < coefficients.length; j++){
+                double multiplication = calculator.multiplication(coefficients[j][k], value);
+                coefficients[j][k+1] = calculator.subtraction(coefficients[j][k+1], multiplication);
             }
+            independentTerms[k+1] = calculator.subtraction(independentTerms[k+1],calculator.multiplication(independentTerms[k], value));
         }
+        print2(coefficients);
         return resolve(coefficients, independentTerms);
     }
 
@@ -183,9 +182,30 @@ public class Exercise implements TP4 {
                                    {2, 3, 1},
                                    {3, 2, 2}};
 
-        double[][] matrix = {{1,2,3},{2,3,4},{3,4,6}};
-        double[] vector = {1,-1,2};
-        double[] result = a.exercise5PartialPivoteo(matrix, vector);
+        double[][] matrix = {{1,3,0,0},{4,4,2,0},{2,1,3,1},{3,7,4,3}};
+        double[] vector = {1,-1,2,8};
+        Calculator calculator = new Calculator() {
+            @Override
+            public double sum(double a, double b) {
+                return a + b;
+            }
+
+            @Override
+            public double subtraction(double a, double b) {
+                return a - b;
+            }
+
+            @Override
+            public double multiplication(double a, double b) {
+                return a * b;
+            }
+
+            @Override
+            public double division(double a, double b) {
+                return a/b;
+            }
+        };
+        double[] result = a.exercise6(matrix, vector, calculator);
         print1(result);
 //        print1(result);
 
