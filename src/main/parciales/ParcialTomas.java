@@ -1,4 +1,4 @@
-package main.parcial;
+package main.parciales;
 
 /**
  * Created by Tomas on 6/13/17.
