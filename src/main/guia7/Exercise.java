@@ -57,24 +57,46 @@ public class Exercise implements TP4 {
 
     @Override
     public double[] exercise5PartialPivoteo(double[][] coefficients, double[] independentTerms) {
-        double[] original = new double[coefficients.length];
-        // Bubble sorting keeping track of changes with original
-        for (int k = 0; k < coefficients.length; k++) {
-            for (int i = k; i < coefficients.length; i++)
-                for (int j = i; j < coefficients.length - 1; j++) {
-                    if (coefficients[k][j] < coefficients[k][j + 1]) {
-                        swapRows(coefficients, j, j + 1);
-                        swap(independentTerms, j, j + 1);
-                        swap(original, j, j + 1);
-                    }
+        for (int k = 0; k < coefficients.length -1; k++) {
+            double pivot = coefficients[k][k];
+            int max = getMaxIndex(coefficients, k);
+            swapRows(coefficients, k, max);
+            swap(independentTerms, k, max);
+            for (int i = k + 1; i < coefficients.length; i++) {
+                int j = 0;
+                while (coefficients[i][j] == 0) j++;
+                double mult = coefficients[k][i]/pivot;
+                while (j < coefficients[i].length) {
+                    coefficients[j][i] -= coefficients[j][k] * mult;
+                    j++;
                 }
+                independentTerms[i] -= independentTerms[k] * mult;
+                pivot = coefficients[k][k];
+            }
         }
-        return exercise5WithoutPivoteo(coefficients, independentTerms);
+        return resolve(coefficients, independentTerms);
+
+
     }
+
 
     @Override
     public double[] exercise6(double[][] coefficients, double[] independentTerms, Calculator calculator) {
-        return new double[0];
+        for (int k = 0; k < coefficients.length - 1; k++) {
+            double value = coefficients[k][k];
+            for (int i = k + 1; i < coefficients.length; i++) {
+                int j = 0;
+                while (coefficients[i][j] == 0) j++;
+                double mult = coefficients[k][i]/value;
+                while (j < coefficients[i].length) {
+                    coefficients[j][i] -= coefficients[j][k] * mult;
+                    j++;
+                }
+                independentTerms[i] -= independentTerms[k] * mult;
+                value = coefficients[k][k];
+            }
+        }
+        return resolve(coefficients, independentTerms);
     }
 
     @Override
@@ -105,17 +127,6 @@ public class Exercise implements TP4 {
         return new double[0];
     }
 
-    private void swap(double[] vector, int index1, int index2){
-        double aux = vector[index1];
-        vector[index1] = vector[index2];
-        vector[index2] = aux;
-    }
-
-    private void swapColumns(double[][] coefficients, int column1, int column2){
-        double[] aux = coefficients[column1];
-        coefficients[column1] = coefficients[column2];
-        coefficients[column2] = aux;
-    }
 
     private void swapRows(double[][] coefficients, int row1, int row2){
         double aux;
@@ -130,6 +141,22 @@ public class Exercise implements TP4 {
         for (int i = 0; i < from.length; i++)
             for (int j = 0; j < from[i].length; j++)
                 to[i][j] = from[i][j];
+    }
+
+    private int getMaxIndex(double[][] coefficients, int column){
+        int value = 0;
+        for (int i = column; i < coefficients.length; i++){
+            if (Math.abs(coefficients[column][i]) > Math.abs(coefficients[column][value])){
+                value = i;
+            }
+        }
+        return value;
+    }
+
+    private void swap(double[] independentTerms, int i1, int i2){
+        double aux = independentTerms[i1];
+        independentTerms[i1] = independentTerms[i2];
+        independentTerms[i2] = aux;
     }
 
     private double[] resolve(double[][] coefficients, double[] independentTerms){
@@ -152,9 +179,18 @@ public class Exercise implements TP4 {
 
     public static void main(String[] args) {
         Exercise a = new Exercise();
-        double[][] coefficients = {{1, 2, 1},{2, 3, 1},{3, 2, 2}};
+        double[][] coefficients = {{1, 2, 1},
+                                   {2, 3, 1},
+                                   {3, 2, 2}};
+
+        double[][] matrix = {{1,2,3},{2,3,4},{3,4,6}};
+        double[] vector = {1,-1,2};
+        double[] result = a.exercise5PartialPivoteo(matrix, vector);
+        print1(result);
+//        print1(result);
+
         double[] victor = {6, 6, 3};
-        print2(a.exercise8(coefficients));
+//        print2(a.exercise8(coefficients));
     }
 
     private static void print(double[][] victor, double independentTerms[]){
