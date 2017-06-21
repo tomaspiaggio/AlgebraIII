@@ -1,4 +1,4 @@
-package main.parciales;
+package main.parciales.recuperatorio;
 
 /**
  * Created by Tomas on 6/13/17.

@@ -36,7 +36,8 @@ public class ExerciseThree implements Exercise3 {
         for (int i = 0; i < matrixA.length; i++)
             for (int j = i; j < matrixA[i].length; j++){
                 double sum = 0;
-                for (int k = 0; k < matrixA.length; k++)
+                for (int k = 0; k
+                        < matrixA.length; k++)
                     sum = calculator.sum(sum, calculator.multiplication(matrixA[k][i], matrixB[j][k]));
                 result[j][i] = sum;
             }
