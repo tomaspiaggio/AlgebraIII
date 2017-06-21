@@ -183,7 +183,7 @@ public class Exercise implements TP4 {
                                    {3, 2, 2}};
 
         double[][] matrix = {{1,3,0,0},{4,4,2,0},{2,1,3,1},{3,7,4,3}};
-        double[] vector = {1,-1,2};
+        double[] vector = {1,-1,2,8};
         Calculator calculator = new Calculator() {
             @Override
             public double sum(double a, double b) {
@@ -205,12 +205,12 @@ public class Exercise implements TP4 {
                 return a/b;
             }
         };
-//        double[] result = a.exercise6(matrix, vector, calculator);
-//        print1(result);
+        double[] result = a.exercise6(matrix, vector, calculator);
+        print1(result);
 //        print1(result);
 
         double[] victor = {6, 6, 3};
-        print1(a.exercise5WithoutPivoteo(coefficients, victor));
+//        print2(a.exercise8(coefficients));
     }
 
     private static void print(double[][] victor, double independentTerms[]){
