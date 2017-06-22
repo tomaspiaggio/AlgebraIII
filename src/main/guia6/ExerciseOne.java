@@ -49,8 +49,6 @@ public class ExerciseOne implements Exercise1 {
             result[i] = sum;
         }
         return result;
-
-
     }
 
     @Override

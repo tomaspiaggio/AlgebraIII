@@ -75,8 +75,6 @@ public class Exercise implements TP4 {
             }
         }
         return resolve(coefficients, independentTerms);
-
-
     }
 
 
@@ -93,7 +91,6 @@ public class Exercise implements TP4 {
             }
             independentTerms[k+1] = calculator.subtraction(independentTerms[k+1],calculator.multiplication(independentTerms[k], value));
         }
-        print2(coefficients);
         return resolve(coefficients, independentTerms);
     }
 
@@ -160,7 +157,8 @@ public class Exercise implements TP4 {
                 matrixL[k][j] = (matrixU[k][k] == 0) ? 0 : ((coefficients[k][j] - sum2)/matrixU[k][k]);
             }
         }
-        return new double[0];
+        independentTerms = matrixMultiplication(matrixU, independentTerms);
+        return exercise5WithoutPivoteo(matrixU, independentTerms);
     }
 
 
@@ -206,6 +204,17 @@ public class Exercise implements TP4 {
         return result;
     }
 
+    private double[] matrixMultiplication(double[][] matrix, double[] vector) {
+        double[] result = new double[vector.length];
+        for (int i = 0; i < matrix.length; i++) {
+            double sum = 0;
+            for (int j = 0; j < matrix[i].length; j++)
+                sum += matrix[j][i] * vector[j];
+            result[i] = sum;
+        }
+        return result;
+    }
+
 
     /**
      * PARA BORRAR ANTES DE ENTREGAR
@@ -214,42 +223,10 @@ public class Exercise implements TP4 {
      */
 
     public static void main(String[] args) {
-        Exercise a = new Exercise();
-        double[][] coefficients = {{1, 2, 1},
-                                   {2, 3, 1},
-                                   {3, 2, 2}};
-
-        double[][] matrix = {{1,3,0,0},{4,4,2,0},{2,1,3,1},{3,7,4,3}};
-        double[] vector = {1,-1,2,8};
-        Calculator calculator = new Calculator() {
-            @Override
-            public double sum(double a, double b) {
-                return a + b;
-            }
-
-            @Override
-            public double subtraction(double a, double b) {
-                return a - b;
-            }
-
-            @Override
-            public double multiplication(double a, double b) {
-                return a * b;
-            }
-
-            @Override
-            public double division(double a, double b) {
-                return a/b;
-            }
-        };
-
-        double[][] newMatrix = {{1,2,3}, {2,3,4}, {3,4,5}};
-
-        a.exercise9(newMatrix, vector);
-//        print1(result);
-
-        double[] victor = {6, 6, 3};
-//        print2(a.exercise8(coefficients));
+        final Exercise a = new Exercise();
+        double[][] coefficients = {{1, 2, 1},{2, 3, 1},{3, 2, 2}};
+        double[] independentTerms = {3, 2, 4};
+        print1(a.exercise9(coefficients, independentTerms));
     }
 
     private static void print(double[][] victor, double independentTerms[]){
