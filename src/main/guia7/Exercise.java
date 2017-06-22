@@ -158,7 +158,7 @@ public class Exercise implements TP4 {
             }
         }
         independentTerms = matrixMultiplication(matrixU, independentTerms);
-        return exercise5WithoutPivoteo(matrixU, independentTerms);
+        return exercise5WithoutPivoteo(matrixL, independentTerms);
     }
 
 
