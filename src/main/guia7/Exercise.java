@@ -80,7 +80,6 @@ public class Exercise implements TP4 {
     }
 
 
-    @Override
     public double[] exercise6(double[][] coefficients, double[] independentTerms, Calculator calculator) {
         for (int k = 0; k < coefficients.length-1; k++){
             double pivot = coefficients[k][k];
@@ -100,7 +99,29 @@ public class Exercise implements TP4 {
 
     @Override
     public double[] exercise7(double[][] coefficients, double[] independentTerms, Calculator calculator) {
-        return new double[0];
+        for (int i = 0; i < coefficients.length-1; i++){
+            double pivot = coefficients[i][i];
+            independentTerms[i] = calculator.division(independentTerms[i], pivot);
+            if (i == 0){
+                coefficients[0][0] = calculator.division(coefficients[0][0], pivot);
+                coefficients[1][0] = calculator.division(coefficients[1][0], pivot);
+            }
+            else{
+                for (int m = i-1; m < i+2; m++){
+                    coefficients[m][i] = calculator.division(coefficients[m][i], pivot);
+                }
+            }
+            double value = coefficients[i][i+1];
+            for (int j = 0; j < coefficients.length; j++){
+                coefficients[j][i+1] = calculator.subtraction(coefficients[j][i+1], calculator.multiplication(coefficients[j][i], value));
+            }
+            independentTerms[i+1] = calculator.subtraction(independentTerms[i+1], calculator.multiplication(independentTerms[i], value));
+        }
+        calculator.division(coefficients[coefficients.length-2][coefficients.length-1], coefficients[coefficients.length-1][coefficients.length-1]);
+        calculator.division(coefficients[coefficients.length-1][coefficients.length-1], coefficients[coefficients.length-1][coefficients.length-1]);
+        calculator.division(independentTerms[coefficients.length-1], coefficients[coefficients.length-1][coefficients.length-1]);
+
+        return resolve(coefficients, independentTerms);
     }
 
     @Override
@@ -123,6 +144,22 @@ public class Exercise implements TP4 {
 
     @Override
     public double[] exercise9(double[][] coefficients, double[] independentTerms) {
+        double[][] matrixL = new double[coefficients.length][coefficients.length];
+        double[][] matrixU = new double[coefficients.length][coefficients.length];
+        for (int k = 0; k < coefficients.length; k++){
+            for (int j = 0; j < coefficients.length; j++) {
+                double sum1 = 0;
+                for (int p = 0; p < k; p++) {
+                    sum1 += matrixL[p][k] * matrixU[j][p];
+                }
+                matrixU[j][k] = coefficients[j][k] - sum1;
+                double sum2 = 0;
+                for (int p = 0; p < k; p++){
+                    sum2 += matrixL[p][j] * matrixU[k][p];
+                }
+                matrixL[k][j] = (matrixU[k][k] == 0) ? 0 : ((coefficients[k][j] - sum2)/matrixU[k][k]);
+            }
+        }
         return new double[0];
     }
 
@@ -205,8 +242,10 @@ public class Exercise implements TP4 {
                 return a/b;
             }
         };
-        double[] result = a.exercise6(matrix, vector, calculator);
-        print1(result);
+
+        double[][] newMatrix = {{1,2,3}, {2,3,4}, {3,4,5}};
+
+        a.exercise9(newMatrix, vector);
 //        print1(result);
 
         double[] victor = {6, 6, 3};
