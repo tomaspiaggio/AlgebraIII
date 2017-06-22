@@ -158,7 +158,7 @@ public class Exercise implements TP4 {
             }
         }
         independentTerms = matrixMultiplication(matrixU, independentTerms);
-        return exercise5WithoutPivoteo(matrixL, independentTerms);
+        return invertedSolve(matrixL, independentTerms);
     }
 
 
@@ -200,6 +200,17 @@ public class Exercise implements TP4 {
             for (int j = i; j < coefficients[i].length; j++)
                 sum += coefficients[j][i] * result[j];
             result[i] = (independentTerms[i] - sum) / coefficients[i][i];
+        }
+        return result;
+    }
+
+    public double[] invertedSolve(double[][] matrix, double[] independentTerms) {
+        double result[] = new double[matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            double sum = 0;
+            for (int j = 0; j < i; j++)
+                sum += matrix[j][i] * result[j];
+            result[i] = independentTerms[i] - sum;
         }
         return result;
     }
