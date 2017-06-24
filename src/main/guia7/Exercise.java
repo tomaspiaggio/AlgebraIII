@@ -26,48 +26,52 @@ public class Exercise implements TP4 {
 
     @Override
     public double[] exercise2(double[][] coefficients, double[] independentTerms) {
-        double result[] = new double[coefficients.length];
-        for (int i = 0; i < coefficients.length; i++) {
-            double sum = 0;
-            for (int j = 0; j <= i; j++)
-                sum += coefficients[i][j] * result[j];
-            result[i] = (independentTerms[i] - sum)/coefficients[i][i];
-        }
-        return result;
-    }
-
-    @Override
-    public double[] exercise5WithoutPivoteo(double[][] coefficients, double[] independentTerms) {
-        for (int k = 0; k < coefficients.length - 1; k++) {
-            double value = coefficients[k][k];
-            for (int i = k + 1; i < coefficients.length; i++) {
-                int j = 0;
-                while (coefficients[j][i] == 0) j++;
-                double mult = coefficients[i][k]/value;
-                while (j < coefficients[i].length) {
-                    coefficients[i][j] -= coefficients[k][j] * mult;
-                    j++;
-                }
-                independentTerms[i] -= independentTerms[k] * mult;
-                value = coefficients[k][k];
+        for (int k = 0; k < coefficients.length; k++){
+            double pivot = coefficients[k][k];
+            independentTerms[k] /= pivot;
+            for (int i = 0; i < coefficients.length; i++){
+                coefficients[k][i] /= pivot;
             }
         }
         return resolve(coefficients, independentTerms);
     }
 
     @Override
+    public double[] exercise5WithoutPivoteo(double[][] coefficients, double[] independentTerms) {
+        double copy[][] = new double[coefficients.length][coefficients.length];
+        double independentCopy[] = new double[independentTerms.length];
+        copy(coefficients, copy);
+        copy(independentTerms, independentCopy);
+        for (int k = 0; k < coefficients.length - 1; k++) {
+            double value = copy[k][k];
+            for (int i = k + 1; i < coefficients.length; i++) {
+                int j = 0;
+                while (copy[j][i] == 0) j++;
+                double mult = copy[i][k]/value;
+                while (j < coefficients[i].length) {
+                    copy[i][j] -= copy[k][j] * mult;
+                    j++;
+                }
+                independentCopy[i] -= independentCopy[k] * mult;
+                value = copy[k][k];
+            }
+        }
+        return resolve(copy, independentCopy);
+    }
+
+    @Override
     public double[] exercise5PartialPivoteo(double[][] coefficients, double[] independentTerms) {
         for (int k = 0; k < coefficients.length -1; k++) {
-            double pivot = coefficients[k][k];
             int max = getMaxIndex(coefficients, k);
             swapRows(coefficients, k, max);
             swap(independentTerms, k, max);
+            double pivot = coefficients[k][k];
             for (int i = k + 1; i < coefficients.length; i++) {
                 int j = 0;
                 while (coefficients[i][j] == 0) j++;
-                double mult = coefficients[k][i]/pivot;
+                double mult = coefficients[i][k]/pivot;
                 while (j < coefficients[i].length) {
-                    coefficients[j][i] -= coefficients[j][k] * mult;
+                    coefficients[i][j] -= coefficients[k][j] * mult;
                     j++;
                 }
                 independentTerms[i] -= independentTerms[k] * mult;
@@ -101,16 +105,16 @@ public class Exercise implements TP4 {
             independentTerms[i] = calculator.division(independentTerms[i], pivot);
             if (i == 0){
                 coefficients[0][0] = calculator.division(coefficients[0][0], pivot);
-                coefficients[1][0] = calculator.division(coefficients[1][0], pivot);
+                coefficients[0][1] = calculator.division(coefficients[0][1], pivot);
             }
             else{
                 for (int m = i-1; m < i+2; m++){
-                    coefficients[m][i] = calculator.division(coefficients[m][i], pivot);
+                    coefficients[i][m] = calculator.division(coefficients[i][m], pivot);
                 }
             }
-            double value = coefficients[i][i+1];
+            double value = coefficients[i+1][i];
             for (int j = 0; j < coefficients.length; j++){
-                coefficients[j][i+1] = calculator.subtraction(coefficients[j][i+1], calculator.multiplication(coefficients[j][i], value));
+                coefficients[i+1][j] = calculator.subtraction(coefficients[i+1][j], calculator.multiplication(coefficients[i][j], value));
             }
             independentTerms[i+1] = calculator.subtraction(independentTerms[i+1], calculator.multiplication(independentTerms[i], value));
         }
@@ -123,20 +127,50 @@ public class Exercise implements TP4 {
 
     @Override
     public double[][] exercise8(double[][] coefficients) {
+//        double[][] identity = new double[coefficients.length][coefficients.length];
+//        double[][] result = new double[coefficients.length][coefficients.length];
+//        double[][] copy = new double[coefficients.length][coefficients.length];
+//
+//        // Because of pointer problem. When passed coefficients one time to exercise5WithoutPivoteo, then the next time it will spit out wrong values
+//        copy(coefficients, copy);
+//
+//        for (int i = 0; i < coefficients.length; i++)
+//            identity[i][i] = 1;
+//        for (int i = 0; i < coefficients.length; i++) {
+//            result[i] = exercise5WithoutPivoteo(coefficients.clone(), identity[i]);
+//            copy(copy, coefficients);
+//        }
+//        return result;
         double[][] identity = new double[coefficients.length][coefficients.length];
-        double[][] result = new double[coefficients.length][coefficients.length];
-        double[][] copy = new double[coefficients.length][coefficients.length];
-
-        // Because of pointer problem. When passed coefficients one time to exercise5WithoutPivoteo, then the next time it will spit out wrong values
-        copy(coefficients, copy);
-
-        for (int i = 0; i < coefficients.length; i++)
+        for(int i = 0; i < identity.length; i++){
             identity[i][i] = 1;
-        for (int i = 0; i < coefficients.length; i++) {
-            result[i] = exercise5WithoutPivoteo(coefficients.clone(), identity[i]);
-            copy(copy, coefficients);
         }
-        return result;
+        double[][] copy = new double[coefficients.length][coefficients.length];
+        copy(coefficients, copy);
+        for (int k = 0; k < coefficients.length; k++){
+            if (copy[k][k] == 0){
+                int max = getMaxIndex(copy, k);
+                swapRows(copy, k, max);
+                swapRows(identity, k, max);
+            }
+            double pivot = copy[k][k];
+
+            for (int j = 0; j < copy.length; j++){
+                copy[k][j] /= pivot;
+                identity[k][j] /= pivot;
+            }
+            for (int i = 0; i < copy.length; i++){
+                if (i != k){
+                    double value = copy[i][k];
+                    for (int j = 0; j < copy.length; j++){
+                        copy[i][j] -= copy[k][j]*value;
+                        identity[i][j] -= identity[k][j]*value;
+                    }
+                }
+            }
+
+        }
+        return identity;
     }
 
     @Override
@@ -165,9 +199,9 @@ public class Exercise implements TP4 {
     private void swapRows(double[][] coefficients, int row1, int row2){
         double aux;
         for (int i = 0; i < coefficients.length; i++) {
-            aux = coefficients[i][row1];
-            coefficients[i][row1] = coefficients[i][row2];
-            coefficients[i][row2] = aux;
+            aux = coefficients[row1][i];
+            coefficients[row1][i] = coefficients[row2][i];
+            coefficients[row2][i] = aux;
         }
     }
 
@@ -175,6 +209,11 @@ public class Exercise implements TP4 {
         for (int i = 0; i < from.length; i++)
             for (int j = 0; j < from[i].length; j++)
                 to[i][j] = from[i][j];
+    }
+
+    private void copy(double[] from, double[] to){
+        for(int i = 0; i < from.length; i++)
+            to[i] = from[i];
     }
 
     private int getMaxIndex(double[][] coefficients, int column){
@@ -236,7 +275,7 @@ public class Exercise implements TP4 {
     public static void main(String[] args) {
         final Exercise a = new Exercise();
         double[][] coefficients = {{1,2,3}, {2,2,2}, {3,6,1}};
-        double[] independentTerms = {1,2,3,4};
+        double[] independentTerms = {1,2,3};
         Calculator calculator = new Calculator() {
             @Override
             public double sum(double a, double b) {
@@ -259,7 +298,49 @@ public class Exercise implements TP4 {
             }
         };
 
-        print(a.exercise8(coefficients));
+        System.out.println("Exercise 1\n");
+        double e1[][] = {{1,3,2}, {0,1,4}, {0,0,1}};
+        double ind1[] = {4,3,2};
+        print(a.exercise1(e1, ind1));
+        System.out.println("");
+
+        System.out.println("\nExercise 2\n");
+        double e2[][] = {{2,4,1}, {0,3,5}, {0,0,4}};
+        double ind2[] = {1,6,5};
+        print(a.exercise2(e2, ind2));
+        System.out.println("");
+
+        System.out.println("\nExercise 5 without pivot\n");
+        double e5[][] = {{1,2,3}, {2,2,2}, {3,6,1}};
+        double ind5[] = {1,2,3};
+        print(a.exercise5WithoutPivoteo(e5, ind5));
+        System.out.println("");
+
+        System.out.println("\nExercise 5 partial pivot\n");
+        print(a.exercise5PartialPivoteo(e5, ind5));
+        System.out.println("");
+
+        System.out.println("\nExercise 6\n");
+        double e6[][] = {{1,7,4,5}, {6,2,4,2}, {0,1,3,1}, {0,0,2,4}};
+        double ind6[] = {4,3,2,1};
+        print(a.exercise6(e6, ind6, calculator));
+        System.out.println("");
+
+        System.out.println("\nExercise 7\n");
+        double e7[][] = {{1,6,0,0}, {6,2,7,0}, {0,7,3,8}, {0,0,8,4}};
+        double ind7[] = {1,2,3,4};
+        print(a.exercise7(e7, ind7, calculator));
+        System.out.println("");
+
+        System.out.println("\nExercise 8\n");
+        double e8[][] = {{1,4,3}, {2,8,1}, {2,2,2}};
+        print(a.exercise8(e8));
+        System.out.println("");
+
+        System.out.println("\nExercise 9\n");
+
+
+
 
     }
 
@@ -279,7 +360,7 @@ public class Exercise implements TP4 {
     private static void print(double[][] victor){
         for (int i = 0; i < victor.length; i++) {
             for (int j = 0; j < victor[i].length; j++)
-                System.out.print("[" + victor[j][i] + "]");
+                System.out.print("[" + victor[i][j] + "]");
             System.out.println();
         }
     }
