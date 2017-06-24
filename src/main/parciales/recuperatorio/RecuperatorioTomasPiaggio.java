@@ -85,8 +85,14 @@ public class RecuperatorioTomasPiaggio {
          * 1 | 2  *  1 | 1
          * 0 | 3     0 | 1
          */
-        double[][] matA = {{1, 0}, {2, 3}};
-        double[][] matB = {{1, 0}, {1, 1}};
+        double[][] matA = {{1, 0, 0, 0},
+                           {2, 3, 0, 0},
+                           {3, 2, 1, 0},
+                           {5, 4, 5, 1}};
+        double[][] matB = {{1, 0, 0, 0},
+                           {1, 1, 0, 0},
+                           {1, 2, 3, 0},
+                           {4, 3, 5, 1}};
         OperationsListener operations = new OperationsListener();
         print(multiplyUpperTriangular(matA, matB, operations));
 
