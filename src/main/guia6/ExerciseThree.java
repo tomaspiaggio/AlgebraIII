@@ -24,10 +24,11 @@ public class ExerciseThree implements Exercise3 {
 
     @Override
     public double[][] exerciseAII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
+        double[][] result = new double[matrixA.length][matrixA[0].length];
         for (int i = 0; i < matrixA.length; i++)
             for (int j = i; j < matrixA.length; j++)
-                matrixB[j][i] = calculator.sum(matrixB[i][j], matrixA[i][j]);
-        return matrixB;
+                result[i][j] = calculator.sum(matrixB[i][j], matrixA[i][j]);
+        return result;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class ExerciseThree implements Exercise3 {
                 double sum = 0;
                 for (int k = 0; k < matrixA.length; k++)
                     sum = calculator.sum(sum, calculator.multiplication(matrixA[i][k], matrixB[k][j]));
-                result[j][i] = sum;
+                result[i][j] = sum;
             }
         return result;
     }
@@ -57,10 +58,11 @@ public class ExerciseThree implements Exercise3 {
 
     @Override
     public double[][] exerciseBII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
+        double[][] result = new double[matrixA.length][matrixA[0].length];
         for (int i = 0; i < matrixA.length; i++)
             for (int j = (i - 1 < 0)? 0 : i - 1; j < matrixA.length; j++)
-                matrixB[i][j] = calculator.sum(matrixB[i][j], matrixA[i][j]);
-        return matrixB;
+                result[i][j] = calculator.sum(matrixB[i][j], matrixA[i][j]);
+        return result;
     }
 
     @Override
@@ -108,11 +110,12 @@ public class ExerciseThree implements Exercise3 {
     public double[][] exerciseDII(double[][] matrixA, int k1A, int k2A, double[][] matrixB, int k1B, int k2B, Calculator calculator) {
         final int k1 = (k1A > k1B)? k1A : k1B;
         final int k2 = (k2A > k2B)? k2A : k2B;
+        double[][] result = new double[matrixA.length][matrixA[0].length];
         for (int i = 0; i < matrixA.length; i++) {
             for (int j = (i > k2)? i - k2 : 0; j < ((i + k1 + 1 > matrixA.length)? matrixA.length : i + k1 + 1); j++)
                 matrixB[i][j] = calculator.sum(matrixB[i][j], matrixA[i][j]);
         }
-        return matrixB;
+        return result;
     }
 
     @Override
@@ -135,5 +138,45 @@ public class ExerciseThree implements Exercise3 {
     @Override
     public double[][] exerciseE(double[][] matrixA, double[][] matrixB, Calculator calculator) {
         return exerciseDIII(matrixA, 0, matrixA.length - 1, matrixB, matrixB.length - 1, 0, calculator);
+    }
+
+    public static void main(String[] args) {
+        final ExerciseThree et = new ExerciseThree();
+        double[][] matA = {{1, 4, 0, 0}, {3, 4, 1, 0}, {0, 2, 3, 4}, {0, 0, 1, 3}};
+        double[] vector = {1, 2, 3, 4};
+        print(et.exerciseDII(matA, 1, 1, matA, 1, 1, new Calculator() {
+            @Override
+            public double sum(double a, double b) {
+                return a + b;
+            }
+
+            @Override
+            public double subtraction(double a, double b) {
+                return a - b;
+            }
+
+            @Override
+            public double multiplication(double a, double b) {
+                return a * b;
+            }
+
+            @Override
+            public double division(double a, double b) {
+                return a / b;
+            }
+        }));
+    }
+
+    private static void print(double[][] matrix){
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++)
+                System.out.print("[" + matrix[i][j] + "]");
+            System.out.println();
+        }
+    }
+
+    private static void print(double[] vector){
+        for (int i = 0; i < vector.length; i++)
+            System.out.print("[" + vector[i] + "]");
     }
 }
