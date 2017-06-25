@@ -2,10 +2,6 @@ package main.guia7;
 
 import main.guia7.interfaces.Calculator;
 import main.guia7.interfaces.TP4;
-import sun.java2d.xr.MutableInteger;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Tomas on 5/23/17.
@@ -95,6 +91,11 @@ public class Exercise implements TP4 {
             }
             independentTerms[k+1] = calculator.subtraction(independentTerms[k+1],calculator.multiplication(independentTerms[k], value));
         }
+        double pivot = coefficients[coefficients.length-1][coefficients.length-1];
+        for (int i = 0; i < coefficients.length; i++){
+            coefficients[coefficients.length-1][i] /= pivot;
+        }
+        independentTerms[coefficients.length-1] /= pivot;
         return exercise1(coefficients, independentTerms);
     }
 
@@ -127,20 +128,6 @@ public class Exercise implements TP4 {
 
     @Override
     public double[][] exercise8(double[][] coefficients) {
-//        double[][] identity = new double[coefficients.length][coefficients.length];
-//        double[][] result = new double[coefficients.length][coefficients.length];
-//        double[][] copy = new double[coefficients.length][coefficients.length];
-//
-//        // Because of pointer problem. When passed coefficients one time to exercise5WithoutPivoteo, then the next time it will spit out wrong values
-//        copy(coefficients, copy);
-//
-//        for (int i = 0; i < coefficients.length; i++)
-//            identity[i][i] = 1;
-//        for (int i = 0; i < coefficients.length; i++) {
-//            result[i] = exercise5WithoutPivoteo(coefficients.clone(), identity[i]);
-//            copy(copy, coefficients);
-//        }
-//        return result;
         double[][] identity = new double[coefficients.length][coefficients.length];
         for(int i = 0; i < identity.length; i++){
             identity[i][i] = 1;
@@ -168,7 +155,6 @@ public class Exercise implements TP4 {
                     }
                 }
             }
-
         }
         return identity;
     }
