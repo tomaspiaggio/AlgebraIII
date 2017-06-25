@@ -134,68 +134,6 @@ public class ExerciseThree implements Exercise3 {
 
     @Override
     public double[][] exerciseE(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-        double[][] result = new double[matrixA.length][matrixA.length];
-        for (int i = 0; i < matrixA.length; i++)
-            result[i][i] = calculator.sum(matrixA[i][i], matrixB[i][i]);
-        return result;
-    }
-
-    public static void main(String[] args) {
-        final ExerciseThree et = new ExerciseThree();
-        double[][] matA = {{1,6,1,0,0},
-                           {3,2,7,4,0},
-                           {0,4,3,8,5},
-                           {0,0,2,5,9},
-                           {0,0,0,1,5}};
-
-        double[][] matB = {{1,6,0,0,0},
-                           {3,2,7,0,0},
-                           {0,3,3,8,0},
-                           {0,0,1,4,9},
-                           {0,0,0,2,5}};
-        double[] vector = {1,2,3,4,5};
-        final Calculator calculator = new Listener();
-
-        print(et.exerciseDIII(matB, 1, 1, matA, 2, 1, calculator));
-        System.out.println("\nOperations made:\nSum: " + ((Listener) calculator).sum + "\nSubtraction: " + ((Listener) calculator).subtraction + "\nMultiplication: " + ((Listener) calculator).multiplication + "\nDivision: " + ((Listener) calculator).division + "\n");
-    }
-
-    private static void print(double[][] mat){
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[i].length; j++)
-                System.out.print("[" + mat[i][j] + "]");
-            System.out.println();
-        }
-    }
-
-    private static void print(double[] vector){
-        for (int i = 0; i < vector.length; i++)
-            System.out.print("[" + vector[i] + "]");
-    }
-
-}
-
-class Listener implements Calculator {
-
-    int sum = 0;
-    int subtraction = 0;
-    int multiplication = 0;
-    int division = 0;
-
-    @Override public double sum(double a, double b) {
-        sum++;
-        return a+b;
-    }
-    @Override public double subtraction(double a, double b) {
-        subtraction++;
-        return a-b;
-    }
-    @Override public double multiplication(double a, double b) {
-        multiplication++;
-        return a*b;
-    }
-    @Override public double division(double a, double b) {
-        division++;
-        return a/b;
+        return exerciseDIII(matrixA, 0, matrixA.length - 1, matrixB, matrixB.length - 1, 0, calculator);
     }
 }
