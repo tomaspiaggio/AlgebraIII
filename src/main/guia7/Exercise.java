@@ -22,14 +22,18 @@ public class Exercise implements TP4 {
 
     @Override
     public double[] exercise2(double[][] coefficients, double[] independentTerms) {
-        for (int k = 0; k < coefficients.length; k++){
-            double pivot = coefficients[k][k];
-            independentTerms[k] /= pivot;
-            for (int i = 0; i < coefficients.length; i++){
-                coefficients[k][i] /= pivot;
+        double copy[][] = new double[coefficients.length][coefficients.length];
+        double independentCopy[] = new double[independentTerms.length];
+        copy(coefficients, copy);
+        copy(independentTerms, independentCopy);
+        for (int k = 0; k < copy.length; k++){
+            double pivot = copy[k][k];
+            independentCopy[k] /= pivot;
+            for (int i = 0; i < copy.length; i++){
+                copy[k][i] /= pivot;
             }
         }
-        return resolve(coefficients, independentTerms);
+        return resolve(copy, independentCopy);
     }
 
     @Override
@@ -57,73 +61,85 @@ public class Exercise implements TP4 {
 
     @Override
     public double[] exercise5PartialPivoteo(double[][] coefficients, double[] independentTerms) {
+        double copy[][] = new double[coefficients.length][coefficients.length];
+        double independentCopy[] = new double[independentTerms.length];
+        copy(coefficients, copy);
+        copy(independentTerms, independentCopy);
         for (int k = 0; k < coefficients.length -1; k++) {
-            int max = getMaxIndex(coefficients, k);
-            swapRows(coefficients, k, max);
-            swap(independentTerms, k, max);
-            double pivot = coefficients[k][k];
-            for (int i = k + 1; i < coefficients.length; i++) {
+            int max = getMaxIndex(copy, k);
+            swapRows(copy, k, max);
+            swap(independentCopy, k, max);
+            double pivot = copy[k][k];
+            for (int i = k + 1; i < copy.length; i++) {
                 int j = 0;
-                while (coefficients[i][j] == 0) j++;
-                double mult = coefficients[i][k]/pivot;
-                while (j < coefficients[i].length) {
-                    coefficients[i][j] -= coefficients[k][j] * mult;
+                while (copy[i][j] == 0) j++;
+                double mult = copy[i][k]/pivot;
+                while (j < copy[i].length) {
+                    copy[i][j] -= copy[k][j] * mult;
                     j++;
                 }
-                independentTerms[i] -= independentTerms[k] * mult;
-                pivot = coefficients[k][k];
+                independentCopy[i] -= independentCopy[k] * mult;
+                pivot = copy[k][k];
             }
         }
-        return resolve(coefficients, independentTerms);
+        return resolve(copy, independentCopy);
     }
 
 
     public double[] exercise6(double[][] coefficients, double[] independentTerms, Calculator calculator) {
-        for (int k = 0; k < coefficients.length-1; k++){
-            double pivot = coefficients[k][k];
-            for (int i = k; i < coefficients.length; i++)
-                coefficients[k][i] = calculator.division(coefficients[k][i], pivot);
-            independentTerms[k] = calculator.division(independentTerms[k], pivot);
-            double value = coefficients[k+1][k];
-            for (int j = k; j < coefficients.length; j++){
-                double multiplication = calculator.multiplication(coefficients[k][j], value);
-                coefficients[k+1][j] = calculator.subtraction(coefficients[k+1][j], multiplication);
+        double[][] copy = new double[coefficients.length][coefficients.length];
+        double independentCopy[] = new double[independentTerms.length];
+        copy(coefficients, copy);
+        copy(independentTerms, independentCopy);
+        for (int k = 0; k < copy.length-1; k++){
+            double pivot = copy[k][k];
+            for (int i = k; i < copy.length; i++)
+                copy[k][i] = calculator.division(copy[k][i], pivot);
+            independentCopy[k] = calculator.division(independentCopy[k], pivot);
+            double value = copy[k+1][k];
+            for (int j = k; j < copy.length; j++){
+                double multiplication = calculator.multiplication(copy[k][j], value);
+                copy[k+1][j] = calculator.subtraction(copy[k+1][j], multiplication);
             }
-            independentTerms[k+1] = calculator.subtraction(independentTerms[k+1],calculator.multiplication(independentTerms[k], value));
+            independentCopy[k+1] = calculator.subtraction(independentCopy[k+1],calculator.multiplication(independentCopy[k], value));
         }
-        double pivot = coefficients[coefficients.length-1][coefficients.length-1];
-        for (int i = 0; i < coefficients.length; i++){
-            coefficients[coefficients.length-1][i] /= pivot;
+        double pivot = copy[copy.length-1][copy.length-1];
+        for (int i = 0; i < copy.length; i++){
+            copy[copy.length-1][i] /= pivot;
         }
-        independentTerms[coefficients.length-1] /= pivot;
-        return exercise1(coefficients, independentTerms);
+        independentCopy[copy.length-1] /= pivot;
+        return exercise1(copy, independentCopy);
     }
 
     @Override
     public double[] exercise7(double[][] coefficients, double[] independentTerms, Calculator calculator) {
-        for (int i = 0; i < coefficients.length-1; i++){
-            double pivot = coefficients[i][i];
-            independentTerms[i] = calculator.division(independentTerms[i], pivot);
+        double[][] copy = new double[coefficients.length][coefficients.length];
+        double[] independentCopy = new double[independentTerms.length];
+        copy(coefficients, copy);
+        copy(independentTerms, independentCopy);
+        for (int i = 0; i < copy.length-1; i++){
+            double pivot = copy[i][i];
+            independentCopy[i] = calculator.division(independentCopy[i], pivot);
             if (i == 0){
-                coefficients[0][0] = calculator.division(coefficients[0][0], pivot);
-                coefficients[0][1] = calculator.division(coefficients[0][1], pivot);
+                copy[0][0] = calculator.division(copy[0][0], pivot);
+                copy[0][1] = calculator.division(copy[0][1], pivot);
             }
             else{
                 for (int m = i-1; m < i+2; m++){
-                    coefficients[i][m] = calculator.division(coefficients[i][m], pivot);
+                    copy[i][m] = calculator.division(copy[i][m], pivot);
                 }
             }
-            double value = coefficients[i+1][i];
-            for (int j = 0; j < coefficients.length; j++){
-                coefficients[i+1][j] = calculator.subtraction(coefficients[i+1][j], calculator.multiplication(coefficients[i][j], value));
+            double value = copy[i+1][i];
+            for (int j = 0; j < copy.length; j++){
+                copy[i+1][j] = calculator.subtraction(copy[i+1][j], calculator.multiplication(copy[i][j], value));
             }
-            independentTerms[i+1] = calculator.subtraction(independentTerms[i+1], calculator.multiplication(independentTerms[i], value));
+            independentCopy[i+1] = calculator.subtraction(independentCopy[i+1], calculator.multiplication(independentCopy[i], value));
         }
-        calculator.division(coefficients[coefficients.length-2][coefficients.length-1], coefficients[coefficients.length-1][coefficients.length-1]);
-        calculator.division(coefficients[coefficients.length-1][coefficients.length-1], coefficients[coefficients.length-1][coefficients.length-1]);
-        calculator.division(independentTerms[coefficients.length-1], coefficients[coefficients.length-1][coefficients.length-1]);
+        calculator.division(copy[copy.length-2][copy.length-1], copy[copy.length-1][copy.length-1]);
+        calculator.division(copy[copy.length-1][copy.length-1], copy[copy.length-1][copy.length-1]);
+        calculator.division(independentCopy[copy.length-1], copy[copy.length-1][copy.length-1]);
 
-        return resolve(coefficients, independentTerms);
+        return resolve(copy, independentCopy);
     }
 
     @Override
@@ -322,12 +338,6 @@ public class Exercise implements TP4 {
         double e8[][] = {{1,4,3}, {2,8,1}, {2,2,2}};
         print(a.exercise8(e8));
         System.out.println("");
-
-        System.out.println("\nExercise 9\n");
-
-
-
-
     }
 
     private static void print(double[][] victor, double independentTerms[]){
